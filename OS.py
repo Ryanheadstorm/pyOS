@@ -11,6 +11,7 @@ class CustomOS(tk.Tk):
         self.title("PyOS")
         self.geometry("800x600")
         self.resizable(False, False)
+        self.readme_opened = False
         self.login_screen()
 
     def login_screen(self):
@@ -64,15 +65,20 @@ class CustomOS(tk.Tk):
 
     def main_menu(self):
         self.clear()
+        self.readme_opened = False
+
         desktop = tk.Frame(self, bg="#3a3a3a")
         desktop.pack(expand=True, fill="both")
+
+        # READ ME file in the middle of the screen
+        readme_btn = tk.Button(desktop, text="📄 READ ME!", font=("Arial", 14), command=self.open_readme)
+        readme_btn.place(relx=0.5, rely=0.4, anchor="center")
 
         taskbar = tk.Frame(self, bg="#1f1f1f", height=40)
         taskbar.pack(side="bottom", fill="x")
 
         tk.Label(desktop, text="Welcome to PyOS", font=("Arial", 18), bg="#3a3a3a", fg="white").pack(pady=10)
 
-        # Buttons on the "taskbar"
         apps = [
             ("Web Browser", self.web_browser),
             ("Files App", self.file_explorer),
@@ -83,6 +89,16 @@ class CustomOS(tk.Tk):
         for name, command in apps:
             btn = tk.Button(taskbar, text=name, command=command, bg="#2e2e2e", fg="white")
             btn.pack(side="left", padx=5, pady=5)
+
+    def open_readme(self):
+        if self.readme_opened:
+            return
+        self.readme_opened = True
+        win = tk.Toplevel(self)
+        win.title("📄 READ ME")
+        win.geometry("400x200")
+        msg = "Hello user! Hope you are enjoying your time on this custom operating system.\n\nBeware that it is still in beta!\n\nThank you!"
+        tk.Label(win, text=msg, font=("Arial", 12), justify="left", wraplength=380).pack(padx=10, pady=10)
 
     def web_browser(self):
         self.clear()
